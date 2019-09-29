@@ -1,6 +1,9 @@
 <?php
 
 use App\Helpers\BP_1;
+use App\Helpers\BP_2;
+use App\Helpers\LeadAdd;
+use App\Helpers\LeadAddProcess;
 use \GoodTech\AmoCRM\Model\Helpers\EntityTypes;
 
 /*
@@ -37,8 +40,18 @@ return
         ],
         [
             'type'    => EntityTypes::LEADS,
-            'actions' => ['update'],
+            'actions' => ['add'],
+            'handler' => [LeadAddProcess::class]
+        ],
+        [
+            'type'    => EntityTypes::LEADS,
+            'actions' => ['add', 'status'],
             'handler' => [BP_1::class]
+        ],
+        [
+            'type'    => EntityTypes::LEADS,
+            'actions' => ['add', 'status'],
+            'handler' => [BP_2::class]
         ]
     ]
 ];
