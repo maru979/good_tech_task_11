@@ -39,24 +39,25 @@
  * (string)         text            Текст задачи. Для вставки в текст id сделки необходимо
  *                                  вставить %s.
  */
+
 return [
     0 => [
-        "pipelineId"    => 1162198,
+        "pipelineId"    => 2043433,
         "statusId"      => 29884039,
         "time"          => [
             "handler"   => \GoodTech\Support\WorkTime::class,
             "from" => [
-                "addMinutes"        => 0,
+                "now"               => null,
             ],
             "till" => [
-                "addMinutes"        => 15,
+                "addMinutes"        => 30,
             ]
         ],
         "loop"          => true,
-        "onLeaveStatus" => false,
-        "entity"        => ['lead'],
+        "onLeaveStatus" => true,
+        "entity"        => ['company', 'contact'],
         "responsible"   => 'entityResponsible',
         "type"          => 1,
-        "text"          => 'Назначить время замера.',
+        "text"          => "Назначить время замера.",
     ]
 ];

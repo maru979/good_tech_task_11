@@ -5,7 +5,9 @@ namespace App\Helpers;
 
 
 use App\measurer;
+use GoodTech\AmoCRM\Facades\AmoCRM;
 use GoodTech\AmoCRM\Model\Leads\Lead;
+use GoodTech\AmoCRM\Model\Leads\LeadsQuery;
 use GoodTech\AmoCRM\Model\Tasks\Task;
 use GoodTech\AmoCRM\Model\WebHook;
 use GoodTech\AmoRestAPI\Helpers\GetRequest;
@@ -30,14 +32,11 @@ class BP_1
 
     private function statusProcessing()
     {
-        //->setCustomFields((new CustomFields())->setDate('455197', strtotime(date('d.m.Y 23:59:59', $measurement_date))));
-        //$measurement_date = $this->getCFValue('455197');
         if($this->lead->getStatusId() == '29884039'){
-            $link = 'https://'.env('AMO_DOMAIN').'.amocrm.ru/api/v2/leads?id='.$this->lead->getId().'&entity=leads';
-            $response = (new GetRequest())->setLink($link)->curlRequest();
-            $mainContactId = $response['_embedded']['items'][0]['main_contact']['id'];
-
-            if (isset($mainContactId)) {
+            $query = (new LeadsQuery())->id($this->lead->getId());
+            $leads = AmoCRM::getLeadsList($query)->all();
+            if ($leads[0]->getMainContactId()){
+                $mainContactId = $leads[0]->getMainContactId();
                 (new Contact())
                     ->setId($mainContactId)
                     ->setResponsibleUserId($this->lead->getResponsibleUserId())

@@ -83,11 +83,14 @@ return
                             [
                                 'from' =>
                                     [
-                                        'minutes'      => 0
+                                        'workTimeStart' => null,
+                                        'subWeekDay' => null,
+
                                     ],
                                 'till' =>
                                     [
-                                        'minutes'      => 15,
+                                        'workTimeEnd' => null,
+                                        'addWeekday' => null,
                                     ]
                             ],
                         'instantly' => true,
