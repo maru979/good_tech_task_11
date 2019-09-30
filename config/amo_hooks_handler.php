@@ -31,7 +31,7 @@ return
         [
             'type'    => EntityTypes::LEADS,
             'actions' => ['add', 'status'],
-            'handler' => 'task_from_status'
+            'handler' => ['task_from_status', BP_1::class], BP_2::class
         ],
         [
             'type'    => EntityTypes::LEADS,
@@ -43,15 +43,5 @@ return
             'actions' => ['add'],
             'handler' => [LeadAddProcess::class]
         ],
-        [
-            'type'    => EntityTypes::LEADS,
-            'actions' => ['add', 'status'],
-            'handler' => [BP_1::class]
-        ],
-        [
-            'type'    => EntityTypes::LEADS,
-            'actions' => ['add', 'status'],
-            'handler' => [BP_2::class]
-        ]
     ]
 ];

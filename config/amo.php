@@ -1,6 +1,30 @@
 <?php
 
 return [
+    'lead_status' => [
+        'BP_1' => [
+            'id' => 29884039,
+        ],
+        'BP_2' => [
+            'id' => 29884042,
+        ],
+        'BP_3' => [
+            'id' => 29884045,
+        ],
+    ],
+    'element_type' => [
+        'contact' => 1,
+        'lead' => 2,
+        'company' => 3,
+        'task' => 4,
+    ],
+    'note_type' => [
+        'default' => '4',
+        'task_result' => '13',
+        'system_message' => '25',
+        'income_sms' => '102',
+        'outcome_sms' => '103'
+    ],
     'cf' => [
         'contact' => [
             'phone' => [
@@ -213,6 +237,29 @@ return [
             ],
             'yandex_client_id' => [
                 'id' => 489061,
+            ],
+            'width' => [
+                'id' => 435877,
+            ],
+            'height' => [
+                'id' => 435875,
+            ],
+            'cell_number' => [
+                'id' => 435881,
+                'enums' =>[
+                    615179 => '2 камеры',
+                    615181 => '3 камеры',
+                ],
+            ],
+            'profile' => [
+                'id' => 435879,
+                'enums' =>[
+                    615169 => 'REHAU',
+                    615171 => 'VEKA',
+                    615173 => 'KBE',
+                    615175 => 'KBE',
+                    615177 => 'SALAMANDER',
+                ],
             ],
         ],
     ],

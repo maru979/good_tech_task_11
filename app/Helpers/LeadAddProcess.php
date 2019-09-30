@@ -1,29 +1,17 @@
 <?php
 
-
 namespace App\Helpers;
 
-
 use GoodTech\AmoCRM\Model\Helpers\CustomFields;
-use GoodTech\AmoCRM\Model\WebHook;
 use Illuminate\Support\Facades\DB;
 use GoodTech\AmoCRM\Model\Leads\Lead;
 
-class LeadAddProcess
+class LeadAddProcess extends LeadOperation
 {
-    /**
-     * @var Lead
-     */
-    private $lead;
-    private $cf;
+    private $budget;
 
-    public function __invoke(WebHook $webHook){
-        $this->lead = $webHook->getEntity();
-        $this->cf = $this->lead->getCustomFields();
-        $this->processLeadOnAdd();
-    }
+    function processLeadChanges(){
 
-    private function processLeadOnAdd(){
         (new Lead())
             ->setId($this->lead->getId())
             ->setSale(intval(round($this->calculateBudget())))
@@ -34,17 +22,26 @@ class LeadAddProcess
     }
 
     private function calculateBudget(){
-        $width = $this->getCFValue('435877');
-        $height = $this->getCFValue('435875');
-        $cell_number = $this->getCFEnum('435881');
-        $profile = $this->getCFEnum('435879');
+        $this->calculateBasePrice();
+        $this->priceApplyCellNumber();
+        $this->priceApplyProfile();
+        return $this->budget;
+    }
 
-        if ($width && $height) {
-            $budget = $width * $height / 100;
-            $budget = ($cell_number == '615181') ? $budget * 1.5 : $budget;
-            $budget = ($profile == '615171') ? $budget - 5000 : $budget;
-        }
-        return $budget;
+    private function calculateBasePrice(){
+        $width = $this->lead->getCustomFields()->getPretty(config('amo.cf.lead.width.id'));
+        $height = $this->lead->getCustomFields()->getPretty(config('amo.cf.lead.height.id'));
+        $this->budget = ($width && $height) ? $width * $height / 100 : null;
+    }
+
+    private function priceApplyCellNumber(){
+        $cell_number = $this->lead->getCustomFields()->getSelectEnum(config('amo.cf.lead.cell_number.id'));
+        $this->budget = ($cell_number == '615181') ? $this->budget * 1.5 : $this->budget;
+    }
+
+    private function priceApplyProfile(){
+        $profile = $this->lead->getCustomFields()->getSelectEnum(config('amo.cf.lead.profile.id'));
+        $this->budget = ($profile == '615171') ? $this->budget - 5000 : $this->budget;
     }
 
     private function getMeasurer(){
@@ -55,13 +52,4 @@ class LeadAddProcess
         DB::table('measurers')->where('id', 1)->update(['workers' => $workers]);
         return $measurer;
     }
-
-    private function getCFValue($id){
-        return isset($this->cf[$id]['values'][0]['value']) ? $this->cf[$id]['values'][0]['value'] : $this->cf[$id]['values'][0];
-    }
-
-    private function getCFEnum($id){
-        return $this->cf[$id]['values'][0]['enum'];
-    }
-
 }
