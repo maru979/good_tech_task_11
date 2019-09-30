@@ -47,15 +47,15 @@ return [
         "time"          => [
             "handler"   => \GoodTech\Support\WorkTime::class,
             "from" => [
-                "now"               => null,
+                "addMinutes"        => 5,
             ],
             "till" => [
                 "addMinutes"        => 30,
             ]
         ],
-        "loop"          => true,
+        "loop"          => false,
         "onLeaveStatus" => true,
-        "entity"        => ['company', 'contact'],
+        "entity"        => ['lead'],
         "responsible"   => 'entityResponsible',
         "type"          => 1,
         "text"          => "Назначить время замера.",
