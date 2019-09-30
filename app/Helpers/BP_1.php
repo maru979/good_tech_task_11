@@ -48,8 +48,6 @@ class BP_1
                 ->setResponsibleUserId(env('ADMIN_ID'))
                 ->setStatusId(29884042)
                 ->save();
-
-            //$task = (new TaskFromStatus())->save();
         }
     }
 }
